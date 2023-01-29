@@ -1,8 +1,14 @@
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import { useState } from "react";
-import "react-pro-sidebar/dist/css/styles.css";
-import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
+import {
+  Sidebar as ProSidebar,
+  Menu,
+  MenuItem,
+  useProSidebar,
+  sidebarClasses,
+  menuClasses,
+} from "react-pro-sidebar";
 import {
   BarChartOutlined,
   CalendarTodayOutlined,
@@ -29,9 +35,9 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       color={colors.grey[100]}
       onClick={() => setSelected(title)}
       icon={icon}
+      component={<Link to={to} />}
     >
       <Typography>{title}</Typography>
-      <Link to={to} />
     </MenuItem>
   );
 };
@@ -39,46 +45,45 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 const SideBar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { collapseSidebar, collapsed, toggleSidebar, toggled } =
+    useProSidebar();
   const [selected, setSelected] = useState("Dashboard");
 
+  const toggle = () => {
+    toggleSidebar();
+    if (toggled) {
+      console.log(true);
+      collapseSidebar();
+    } else {
+      console.log(false);
+      collapseSidebar();
+    }
+  };
+
   return (
-    <Box
-      sx={{
-        "& .pro-sidebar-inner": {
-          background: `${colors.primary[400]} !important`,
-        },
-        "& .pro-icon-wrapper": {
-          backgroundColor: "transparent !important",
-        },
-        "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
-        },
-        "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
-        },
-        "& .pro-menu-item.active": {
-          color: "#6870fa !important",
-        },
-      }}
-    >
-      <ProSidebar collapsed={isCollapsed}>
-        <Menu iconShape="square">
+    <Box display="flex" flexDirection="row" height="100vh">
+      <ProSidebar
+        rootStyles={{
+          [`.${sidebarClasses.container}`]: {
+            background: `${colors.primary[400]} !important`,
+          },
+          [`.${menuClasses.button}:hover`]: {
+            color: "#868dfb !important",
+            background: "none !important",
+          },
+        }}
+      >
+        <Menu iconShape="square" style={{ height: "100vh" }}>
           {/* LOGO AND MENU ICON */}
           <MenuItem
-            icon={
-              isCollapsed ? (
-                <IconButton onClick={() => setIsCollapsed((prev) => !prev)}>
-                  <MenuOutlined />
-                </IconButton>
-              ) : undefined
-            }
+            icon={<MenuOutlined />}
             style={{
               margin: "10px 0 20px 0",
               color: colors.grey[100],
             }}
+            onClick={toggle}
           >
-            {!isCollapsed && (
+            {!collapsed && (
               <Box
                 display="flex"
                 justifyContent="space-between"
@@ -88,18 +93,16 @@ const SideBar = () => {
                 <Typography variant="h3" color={colors.grey[100]}>
                   ADMINIS
                 </Typography>
-                <IconButton onClick={() => setIsCollapsed((prev) => !prev)}>
-                  <MenuOutlined />
-                </IconButton>
               </Box>
             )}
           </MenuItem>
 
           {/* USER */}
-          {!isCollapsed && (
+          {!collapsed && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
+                  loading="lazy"
                   alt="profile-user"
                   width="100px"
                   height="100px"
@@ -127,7 +130,7 @@ const SideBar = () => {
           )}
 
           {/* MENU ITEMS */}
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          <Box paddingLeft={collapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
               to="/dashboard"
@@ -143,7 +146,7 @@ const SideBar = () => {
             >
               Data
             </Typography>
-            
+
             <Item
               title="Manage Team"
               to="/team"
