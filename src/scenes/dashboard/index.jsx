@@ -2,7 +2,6 @@ import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/header";
 import {
-  BarChart,
   DownloadOutlined,
   Email,
   PersonAdd,
@@ -14,6 +13,7 @@ import LineChart from "../../components/line-chart";
 import { mockTransactions } from "../../data/mockData";
 import ProgressCircle from "../../components/progress-circle";
 import GeographyChart from "../../components/geography-chart";
+import BarChart from "../../components/bar-chart";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -44,6 +44,8 @@ const Dashboard = () => {
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px"
+        maxHeight="75vh"
+        overflow="auto"
       >
         {/* ROW 1 */}
         <Box
