@@ -44,6 +44,8 @@ const Dashboard = () => {
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px"
+        height="75vh"
+        overflow="auto"
       >
         {/* ROW 1 */}
         <Box
@@ -287,10 +289,8 @@ const Dashboard = () => {
           </Box>
         </Box>
 
-
-
-
-                <Box
+        {/* ROW 4 -- Testing Scroll */}
+        <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -351,7 +351,6 @@ const Dashboard = () => {
             <GeographyChart isDashboard={true} />
           </Box>
         </Box>
-
       </Box>
     </Box>
   );
