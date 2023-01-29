@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import TopBar from "./scenes/global/tob-bar";
 import Dashboard from "./scenes/dashboard";
 import SideBar from "./scenes/global/sidebar";
+import Team from "./scenes/team";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -19,6 +20,7 @@ function App() {
             <TopBar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/team" element={<Team />} />
             </Routes>
           </main>
         </div>
